@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    color: white;
+}
+
+.nav{
+    min-width: 7em;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+a:hover{
+    transform: scale(1.2);
+    color: white;
+    text-transform: uppercase;
+}
+
+.profile{
+    margin-left: 3em;
+    color: black;
+}
+
+.table{
+    margin-top: 6em;
+    min-width: 10em;
+    row-gap: 30px;
+}

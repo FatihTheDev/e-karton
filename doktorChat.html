@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dopisivanje s doktorom opšte prakse</title>
+<style>
+  body {
+    background-color: #f2f2f2;  
+  }
+  #title {
+    text-align: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  }
+  .top{
+    background-color: lightcoral;
+    width: 100%;
+  }
+  #chatContainer {
+  width: 90%;
+  max-height: 300px;
+  height: 300px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid black;
+  margin-bottom: 20px;
+}
+
+.chat-bubble {
+  padding: 10px;
+  border-radius: 20px;
+  margin: 10px 0;
+  max-width: 80%;
+}
+
+.doctor-bubble {
+  background-color: #FFCCCC; 
+  align-self: flex-end;
+}
+
+.user-bubble {
+  background-color: #FFFFFF; 
+  align-self: flex-start;
+}
+
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+  #app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+
+  #apiResponse {
+    width: 90%;
+    height: 150px;
+    margin-bottom: 10px;
+  }
+
+  #userInput {
+    width: 90%;
+    height: 2.4em;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    border: 2px solid black;
+  }
+  #userInput::placeholder {
+  font-size: 15px;
+  }
+  #userInput:focus {
+  border: 3px solid rgb(255, 0, 0);
+  font-size: 15px;
+  }
+
+  #sendButton {
+    width: 200px;
+  background-color: rgb(200, 31, 31);
+  color: white;
+  height: 40px;
+  }
+  #sendButton:hover {
+  animation: changeColor 1s;
+  }
+  @keyframes changeColor {
+  0% {
+  background: linear-gradient(to right, rgb(200, 31, 31), rgb(89, 62, 208));
+  }
+  40% {
+  background: linear-gradient(to right, rgb(89, 62, 208), rgb(200, 31, 31));
+  }
+  50% {
+  background: linear-gradient(to right, rgb(200, 31, 31), rgb(89, 62, 208));
+  }
+  70% {
+  background: linear-gradient(to right, rgb(89, 62, 208), rgb(200, 31, 31));
+  }
+  100% {
+  background: linear-gradient(to right, rgb(89, 62, 208), rgb(200, 31, 31));
+  }
+}
+</style>
+</head>
+<body>
+  <div class="top">
+  <h1 id="title">Dopisivanje s doktorom opšte prakse</h1>
+</div>
+<div id="app">
+  <div id="chatContainer">
+    </div>
+  <input type="text" id="userInput" placeholder="Pitaj svog doktora (npr. Imam glavobolju, koji lijek biste mi preporučili?)..." />
+  <button id="sendButton">Pošalji</button>
+</div>
+
+<script>
+  const symptoms = ["glavobolja", "temperatura", "kasalj", "kašalj", "upala grla", "curenje nosa", "curi mi nos"];
+
+document.getElementById('sendButton').addEventListener('click', () => {
+  const userQuestion = document.getElementById('userInput').value;
+
+
+  if (userQuestion.includes("preporucio") || userQuestion.includes("preporučio") || userQuestion.includes("preporučili") || userQuestion.includes("preporucili") || userQuestion.includes("dao") || userQuestion.includes("dali") || userQuestion.includes("date") || userQuestion.includes("lijekove")) {
+    const medicines = []; 
+
+
+    for (const symptom of symptoms) {
+      if (userQuestion.includes(symptom)) {
+        medicines.push(...getMedicinesForSymptom(symptom));
+      }
+    }
+
+
+    if (medicines.length === 0) {
+      medicines.push(...["Paracetamol", "Ibuprofen", "Aspirin"]);
+    }
+
+    const randomMedicine = medicines[Math.floor(Math.random() * medicines.length)];
+
+    const alternativeReplies = [
+    `Na osnovu Vaših simptoma, preporučio bih ${randomMedicine}. Ukoliko se promijeni vaše stanje, molim Vas da mi napišete poruku da bih Vam mogao promijeniti dijagnozu.`,
+    `Hvala što ste mi se obratili. Preporučio bih Vam da uzmete ${randomMedicine}. Ako dođe do bilo kakvih promjena, slobodno javite!`,
+    `Zdravo! Na osnovu ovoga što vidim, najbolje bi bilo da uzmete ${randomMedicine}.`,
+    `S obzirom na situaciju, najbolje bi bilo da uzmete ${randomMedicine}. Preporučujem Vam ovo za sad, a za kasnije ćemo vidjeti kako će se mijenjati stanje.`,
+];
+
+const randomReplyIndex = Math.floor(Math.random() * alternativeReplies.length);
+
+
+  setTimeout(() => {
+
+    const doctorResponse = alternativeReplies[randomReplyIndex];
+
+const doctorBubble = document.createElement('div');
+doctorBubble.classList.add('chat-bubble', 'doctor-bubble', 'clearfix');
+doctorBubble.textContent = doctorResponse;
+userInput.value = '';
+document.getElementById('chatContainer').appendChild(doctorBubble);
+}, 5000);
+
+document.getElementById('chatContainer').scrollTop = document.getElementById('chatContainer').scrollHeight;
+} 
+
+else if (userQuestion.includes("noga") || userQuestion.includes("boli me noga") || userQuestion.includes("Noga") || userQuestion.includes("Boli me noga") || userQuestion.includes("noge") || userQuestion.includes("bole me noge") || userQuestion.includes("Noge") || userQuestion.includes("Bole me noge") || userQuestion.includes("noge me bole") || userQuestion.includes("Noge me bole")) {
+    const medicines = []; 
+
+
+    for (const symptom of symptoms) {
+      if (userQuestion.includes(symptom)) {
+        medicines.push(...getMedicinesForSymptom(symptom));
+      }
+    }
+
+    const alternativeReplies = [
+    `Žao mi je što to čujem. Uputiću Vas kod ortopeda što prije! Ako dođe do promjene stanja, samo javite!`,
+    `U tom slučaju, najbolje bi bilo da Vas uputim kod ortopeda. Javiću Vam pojedinosti malo kasnije.`
+];
+
+const randomReplyIndex = Math.floor(Math.random() * alternativeReplies.length);
+
+
+  setTimeout(() => {
+
+    const doctorResponse = alternativeReplies[randomReplyIndex];
+
+const doctorBubble = document.createElement('div');
+doctorBubble.classList.add('chat-bubble', 'doctor-bubble', 'clearfix');
+doctorBubble.textContent = doctorResponse;
+userInput.value = '';
+document.getElementById('chatContainer').appendChild(doctorBubble);
+}, 5000);
+
+document.getElementById('chatContainer').scrollTop = document.getElementById('chatContainer').scrollHeight;
+
+  } 
+
+
+  else if (userQuestion.includes("alergija") || userQuestion.includes("alergiju") || userQuestion.includes("Alergija") || userQuestion.includes("Alergiju") || userQuestion.includes("alergije") || userQuestion.includes("Alergije")) {
+    const medicines = []; 
+
+    const alternativeReplies = [
+    `Žao mi je. Uputiću Vas kod dermatologa što prije.`,
+    `U tom slučaju, uputiću Vas kod dermatologa. Ako se bude išta promijenilo u kontekstu Vašeg zdravlja, recite mi.`,
+    `Drago mi je što ste mi se obratili! s obzirom na situaciju, uputiću Vas kod dermatologa. Nadam se da će Vam se stanje brzo poboljšati :).`,
+];
+
+const randomReplyIndex = Math.floor(Math.random() * alternativeReplies.length);
+
+
+  setTimeout(() => {
+
+    const doctorResponse = alternativeReplies[randomReplyIndex];
+
+const doctorBubble = document.createElement('div');
+doctorBubble.classList.add('chat-bubble', 'doctor-bubble', 'clearfix');
+doctorBubble.textContent = doctorResponse;
+userInput.value = '';
+document.getElementById('chatContainer').appendChild(doctorBubble);
+}, 5000);
+
+document.getElementById('chatContainer').scrollTop = document.getElementById('chatContainer').scrollHeight;
+
+  } 
+
+
+  else if (userQuestion.includes("super") || userQuestion.includes("bolje mi je") || userQuestion.includes("bolje") || userQuestion.includes("ekstra") || userQuestion.includes("extra") || userQuestion.includes("dobro") || userQuestion.includes("dobar") || userQuestion.includes("bolji") || userQuestion.includes("fino") || userQuestion.includes("top") || userQuestion.includes("Super") || userQuestion.includes("Bolje mi je") || userQuestion.includes("Bolje") || userQuestion.includes("Ekstra") || userQuestion.includes("Extra") || userQuestion.includes("Dobro") || userQuestion.includes("Dobar") || userQuestion.includes("Bolji") || userQuestion.includes("Fino") || userQuestion.includes("Top")) {
+    const medicines = []; 
+
+    const alternativeReplies = [
+    `Baš mi je drago što to čujem! Nadam se da ćete se potpuno oporaviti uskoro.`,
+    `To su odlične vijesti. Drago mi je zbog toga.`,
+    `To je odlično! Drago mi je što su se vaši napori isplatili.`,
+    `Super! Vrlo sam zadovoljan Vašim trudom i učestvovanjem u procesu liječenja.`,
+    `Zdravo! To je odlično! Iskren da Vam budem, ne čudi me to, budući da ste se redovno pridržavali terapije.`,
+];
+
+const randomReplyIndex = Math.floor(Math.random() * alternativeReplies.length);
+
+
+  setTimeout(() => {
+
+    const doctorResponse = alternativeReplies[randomReplyIndex];
+
+const doctorBubble = document.createElement('div');
+doctorBubble.classList.add('chat-bubble', 'doctor-bubble', 'clearfix');
+doctorBubble.textContent = doctorResponse;
+userInput.value = '';
+document.getElementById('chatContainer').appendChild(doctorBubble);
+}, 5000);
+
+document.getElementById('chatContainer').scrollTop = document.getElementById('chatContainer').scrollHeight;
+
+  } 
+  
+  else if (userQuestion.includes("loše") || userQuestion.includes("Loše") || userQuestion.includes("Lose") || userQuestion.includes("lose") || userQuestion.includes("nije mi bolje") || userQuestion.includes("los") || userQuestion.includes("Los") || userQuestion.includes("loš") || userQuestion.includes("Loš") || userQuestion.includes("gore") || userQuestion.includes("Gore") || userQuestion.includes("grozno") || userQuestion.includes("Grozno") || userQuestion.includes("grozan") || userQuestion.includes("Grozan") || userQuestion.includes("očajno") || userQuestion.includes("Očajno") || userQuestion.includes("bezveze") || userQuestion.includes("ocajno") || userQuestion.includes("Bezveze") || userQuestion.includes("Ocajno")) {
+    const medicines = []; 
+
+    const alternativeReplies = [
+    `Jako mi je žao. Molim Vas da se pridržavate svega što Vam je propisao specijalista, čak i da možda povećate dozu u dogovoru sa specijalistom.`,
+    `Žao mi je da to čujem :(. Nadam se da ćete se osjećati bolje uskoro.`,
+    `To nisu dobre vijesti. Molim Vas da pitate specijalistu za povećanje doze koji uzimate.`,
+    `To je grozno! Nadam se da se pridržavate propisane terapije. Vrlo mi je žao.`
+];
+
+const randomReplyIndex = Math.floor(Math.random() * alternativeReplies.length);
+
+
+  setTimeout(() => {
+
+    const doctorResponse = alternativeReplies[randomReplyIndex];
+
+const doctorBubble = document.createElement('div');
+doctorBubble.classList.add('chat-bubble', 'doctor-bubble', 'clearfix');
+doctorBubble.textContent = doctorResponse;
+userInput.value = '';
+document.getElementById('chatContainer').appendChild(doctorBubble);
+}, 5000);
+
+document.getElementById('chatContainer').scrollTop = document.getElementById('chatContainer').scrollHeight;
+
+  } 
+  
+
+  else {
+    query({
+      inputs: {
+        "question": userQuestion,
+        "context": "As your doctor, I'm here to assist you with providing proper medication for your symptoms."
+      }
+    }).then(response => {
+      document.getElementById('apiResponse').value = JSON.stringify(response, null, 2);
+    }).catch(error => {
+      console.error("Error occurred: ", error);
+    });
+  }
+});
+
+
+function getMedicinesForSymptom(symptom) {
+  switch (symptom) {
+    case "glavobolja" || "glavobolju" || "boli me glava" || "Glavobolja" || "Glavobolju" || "Boli me glava":
+      return ["Paracetamol", "Ibuprofen"];
+    case "temperatura" || "temperaturu" || "Temperatura" || "Temperaturu":
+      return ["Paracetamol", "Ibuprofen", "Aspirin"];
+    case "kasalj" || "kašalj" || "kašljem" || "kasljem" || "Kasalj" || "Kašalj" || "Kašljem" || "Kasljem":
+      return ["Sirup za kašalj", "Expectorant"];
+    case "upala grla" || "Upala grla" || "upaljeno grlo" || "Upaljeno grlo":
+      return ["Lozenges", "Throat spray"];
+    case "curenje nosa" || "nos mi curi" || "curi mi nos" ||  "Curenje nosa" || "Nos mi curi" || "Curi mi nos":
+      return ["Decongestant", "Antihistamin"];
+    default:
+
+      return ["Molim Vas da se opišete s kojim simptomima se suočavate."];
+
+  }
+}
+
+</script>
+</body>
+</html>
